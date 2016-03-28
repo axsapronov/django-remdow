@@ -43,7 +43,6 @@ def get_folder(folder_type='img'):
     return folder
 
 
-@register.filter
 def download_link(value, type_link):
     m = get_filename(value)
     file_path = os.path.join(get_folder(type_link), m)
