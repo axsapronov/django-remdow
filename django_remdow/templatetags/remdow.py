@@ -4,6 +4,7 @@ import hashlib
 import os
 import sys
 
+from bs4 import BeautifulSoup
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 if sys.version_info > (3, 0):
@@ -17,7 +18,7 @@ from django.conf import settings
 register = template.Library()
 
 
-def download_image(file_path, url):
+def _download(file_path, url):
     with open(file_path, 'wb') as fio:
         opener = build_opener()
         opener.addheaders = [
@@ -27,21 +28,38 @@ def download_image(file_path, url):
     return True
 
 
-@register.filter
-def download(value):
+def get_filename(url):
     if sys.version_info > (3, 0):
-        link = str(value).encode('utf-8')
+        link = str(url).encode('utf-8')
     else:
-        link = str(value)
-    m = hashlib.md5(link).hexdigest()
+        link = str(url)
+    return hashlib.md5(link).hexdigest()
 
-    folder = os.path.join(settings.STATIC_ROOT, 'remdow')
+
+def get_folder(folder_type='img'):
+    folder = os.path.join(settings.STATIC_ROOT, 'remdow/%s' % folder_type)
     if not os.path.isdir(folder):
         os.makedirs(folder)
-    file_path = os.path.join(folder, m)
+    return folder
 
-    if os.path.exists(file_path) or download_image(file_path, value):
-        result = static('remdow/%s' % m)
+
+@register.filter
+def download_link(value, type_link):
+    m = get_filename(value)
+    file_path = os.path.join(get_folder(type_link), m)
+
+    if os.path.exists(file_path) or _download(file_path, value):
+        result = static('remdow/%s/%s' % (type_link, m))
     else:
         result = value
     return result
+
+
+@register.filter
+def text(value):
+    soup = BeautifulSoup(value, "html.parser")
+    links = soup.find_all('img', src=True)
+    for link in links:
+        link["src"] = download_link(link["src"], 'img')
+
+    return str(soup)

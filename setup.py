@@ -38,7 +38,7 @@ setup(
     license='MIT',
     description='  ',
     long_description=README,
-    install_requires=['django>=1.7'],
+    install_requires=['django>=1.7', 'bs4', 'lxml'],
     test_requires=['pytest', 'pytest-django', ],
     cmdclass={'test': PyTest},
     classifiers=[
