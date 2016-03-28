@@ -56,7 +56,7 @@ def download_link(value, type_link):
 
 
 @register.filter
-def text(value):
+def remdow(value):
     soup = BeautifulSoup(value, "html.parser")
     links = soup.find_all('img', src=True)
     for link in links:
