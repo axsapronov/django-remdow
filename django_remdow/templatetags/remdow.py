@@ -19,6 +19,10 @@ from django.conf import settings
 register = template.Library()
 
 
+def get_extensions():
+    return ['jpg', 'jpeg', 'png', 'gif']
+
+
 def _download(file_path, url):
     with open(file_path, 'wb') as fio:
         opener = build_opener()
@@ -28,8 +32,14 @@ def _download(file_path, url):
         fio.flush()
 
     extension = imghdr.what(file_path)
-    if extension in ['jpg', 'jpeg', 'png', 'gif']:
-        os.rename(file_path, "%s.%s" % (file_path, extension))
+    if extension in get_extensions():
+        old_file_path = file_path
+        file_path = "%s.%s" % (file_path, extension)
+        os.rename(old_file_path, file_path)
+        for ext in get_extensions():
+            sym_path = "%s.%s" % (old_file_path, ext)
+            if ext != extension or not os.path.exists(sym_path):
+                os.symlink(file_path, sym_path)
     return file_path
 
 
@@ -48,13 +58,11 @@ def get_folder(folder_type='img'):
     return folder
 
 
-#
-
 def download_link(value, type_link):
     m = get_filename(value)
     file_path = os.path.join(get_folder(type_link), m)
 
-    if os.path.exists(file_path):
+    if not os.path.exists(file_path + '.%s' % 'png'):
         file_path = _download(file_path, value)
         _, file_extension = os.path.splitext(file_path)
         if file_extension:
@@ -62,7 +70,7 @@ def download_link(value, type_link):
         else:
             result = static('remdow/%s/%s' % (type_link, m))
     else:
-        result = value
+        result = static('remdow/%s/%s.%s' % (type_link, m, 'png'))
     return result
 
 
