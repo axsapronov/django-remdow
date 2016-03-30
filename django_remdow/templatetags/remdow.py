@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import hashlib
+import imghdr
 import os
 import sys
 
@@ -25,7 +26,11 @@ def _download(file_path, url):
             ('User-agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1')]
         fio.write(opener.open(url).read())
         fio.flush()
-    return True
+
+    extension = imghdr.what(file_path)
+    if extension in ['jpg', 'jpeg', 'png', 'gif']:
+        os.rename(file_path, "%s.%s" % (file_path, extension))
+    return file_path
 
 
 def get_filename(url):
@@ -43,12 +48,19 @@ def get_folder(folder_type='img'):
     return folder
 
 
+#
+
 def download_link(value, type_link):
     m = get_filename(value)
     file_path = os.path.join(get_folder(type_link), m)
 
-    if os.path.exists(file_path) or _download(file_path, value):
-        result = static('remdow/%s/%s' % (type_link, m))
+    if os.path.exists(file_path):
+        file_path = _download(file_path, value)
+        _, file_extension = os.path.splitext(file_path)
+        if file_extension:
+            result = static('remdow/%s/%s.%s' % (type_link, m, file_extension))
+        else:
+            result = static('remdow/%s/%s' % (type_link, m))
     else:
         result = value
     return result
@@ -60,5 +72,13 @@ def remdow(value):
     links = soup.find_all('img', src=True)
     for link in links:
         link["src"] = download_link(link["src"], 'img')
+    return str(soup)
 
+
+@register.filter
+def responsive(value):
+    soup = BeautifulSoup(value, "html.parser")
+    links = soup.find_all('img', src=True)
+    for link in links:
+        link["class"] = link.get('class', []) + ['img-responsive']
     return str(soup)
