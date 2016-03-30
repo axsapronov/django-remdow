@@ -71,7 +71,10 @@ def download_link(value, type_link):
         else:
             result = static('remdow/%s/%s' % (type_link, m))
     else:
-        result = static('remdow/%s/%s.%s' % (type_link, m, 'png'))
+        if m:
+            result = static('remdow/%s/%s' % (type_link, m))
+        else:
+            result = static('remdow/%s/%s.%s' % (type_link, m, 'png'))
     return result
 
 
