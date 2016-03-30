@@ -36,9 +36,10 @@ def _download(file_path, url):
         old_file_path = file_path
         file_path = "%s.%s" % (file_path, extension)
         os.rename(old_file_path, file_path)
-        for ext in get_extensions():
+        ext = 'png'
+        if ext != extension:
             sym_path = "%s.%s" % (old_file_path, ext)
-            if ext != extension or not os.path.exists(sym_path):
+            if not os.path.exists(sym_path):
                 os.symlink(file_path, sym_path)
     return file_path
 
