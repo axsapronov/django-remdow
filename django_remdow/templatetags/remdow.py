@@ -4,9 +4,11 @@ import hashlib
 import imghdr
 import os
 import sys
+from functools import wraps
 
 from bs4 import BeautifulSoup
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.utils.safestring import mark_safe
 
 if sys.version_info > (3, 0):
     from urllib.request import build_opener
@@ -78,19 +80,52 @@ def download_link(value, type_link):
     return result
 
 
-@register.filter
-def remdow(value):
-    soup = BeautifulSoup(value, "html.parser")
-    links = soup.find_all('img', src=True)
-    for link in links:
+def _get_soup(value):
+    return BeautifulSoup(value, "html.parser")
+
+
+def _get_img(soup):
+    return soup.find_all('img', src=True)
+
+
+def as_mark_safe(func=None):
+    @wraps(func)
+    def func_wrapper(*args, **kwargs):
+        return mark_safe(func(*args, **kwargs))
+
+    return func_wrapper
+
+
+@register.filter(name='img_local')
+@as_mark_safe
+def remdow_img_local(value):
+    soup = _get_soup(value)
+    for link in _get_img(soup):
         link["src"] = download_link(link["src"], 'img')
     return str(soup)
 
 
-@register.filter
-def responsive(value):
-    soup = BeautifulSoup(value, "html.parser")
-    links = soup.find_all('img', src=True)
-    for link in links:
+@register.filter(name='img_responsive')
+@as_mark_safe
+def remdow_img_responsive(value):
+    soup = _get_soup(value)
+    for link in _get_img(soup):
         link["class"] = link.get('class', []) + ['img-responsive']
+    return str(soup)
+
+
+@register.simple_tag(name='lazy_script_include')
+@as_mark_safe
+def remdow_lazy_script_include():
+    return '<script src="//cdn.jsdelivr.net/layzr.js/2.0.2/layzr.min.js">var layzr = new Layzr();</script>'
+
+
+@register.filter(name='img_lazy')
+@as_mark_safe
+def remdow_lazy_img(value):
+    soup = _get_soup(value)
+    for link in _get_img(soup):
+        link["data-normal"] = str(link["src"])
+        link["srcset"] = str(link["src"])
+        del link["src"]
     return str(soup)

@@ -1,17 +1,28 @@
-{% load remdow %}
-{% load staticfiles %}
 <!DOCTYPE html>
+{% load remdow %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Page1</title>
+    <title>Page2</title>
 </head>
 <body>
 
+{% lazy_script_include %}
+
+{{ '<img src="http://placehold.it/350x150"><img src="http://placehold.it/350x150"><img src="http://placehold.it/350x150">'|img_local|img_responsive|img_lazy }}
+
+{% with 'x5EdOI0-0EQ' as yotu_id %}
+    {% with "http://img.youtube.com/vi/"|add:yotu_id|add:"/hqdefault.jpg" as yotu_link %}
+        {{ '<img src="'|add:yotu_link|add:'"/>'|img_local|img_responsive }}
+    {% endwith %}
+{% endwith %}
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-<img src="http://placehold.it/350x150">
-<img src="http://placehold.it/350x150">
+{{ '<img src="http://placehold.it/350x150"><img src="http://placehold.it/350x150"><img src="http://placehold.it/350x150">'|img_local|img_responsive|img_lazy }}
 
 </body>
 </html>
