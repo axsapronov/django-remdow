@@ -105,13 +105,23 @@ def remdow_img_local(value):
     return str(soup)
 
 
+def add_class_image(value, class_name):
+    soup = _get_soup(value)
+    for link in _get_img(soup):
+        link["class"] = link.get('class', []) + [class_name]
+    return str(soup)
+
+
 @register.filter(name='img_responsive')
 @as_mark_safe
 def remdow_img_responsive(value):
-    soup = _get_soup(value)
-    for link in _get_img(soup):
-        link["class"] = link.get('class', []) + ['img-responsive']
-    return str(soup)
+    return add_class_image(value, 'img-responsive')
+
+
+@register.filter(name='img_center')
+@as_mark_safe
+def remdow_img_center(value):
+    return add_class_image(value, 'center-block')
 
 
 @register.simple_tag(name='lazy_script_include')
