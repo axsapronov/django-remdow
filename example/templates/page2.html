@@ -7,12 +7,9 @@
 </head>
 <body>
 
-
-{{ '<img src="http://placehold.it/350x150"><img src="http://placehold.it/350x150"><img src="http://placehold.it/350x150">'|img_local|img_responsive|safe }}
-
 {% with 'x5EdOI0-0EQ' as yotu_id %}
     {% with "http://img.youtube.com/vi/"|add:yotu_id|add:"/hqdefault.jpg" as yotu_link %}
-        {{ '<img src="'|add:yotu_link|add:'"/>'|img_local|img_responsive|safe }}
+        {{ '<img src="'|add:yotu_link|add:'"/>'|img_local|img_responsive }}
     {% endwith %}
 {% endwith %}
 
