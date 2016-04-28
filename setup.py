@@ -36,7 +36,7 @@ setup(
     include_package_data=True,
     url='https://github.com/WarmongeR1/django-remdow',
     license='MIT',
-    description='  ',
+    description='Simple Django app for manipulating static files (img files)',
     long_description=README,
     install_requires=['django>=1.6', 'beautifulsoup4'],
     classifiers=[
