@@ -63,3 +63,4 @@ target/
 example/db.sqlite3
 example/assets
 example/static
+.pypirc
