@@ -7,7 +7,14 @@ import sys
 from functools import wraps
 
 from bs4 import BeautifulSoup
-from django.contrib.staticfiles.templatetags.staticfiles import static
+
+try:
+    # Django 2
+    from django.contrib.staticfiles.templatetags.staticfiles import static
+except ModuleNotFoundError:
+    # Django 3
+    from django.templatetags.static import static
+
 from django.utils.safestring import mark_safe
 
 if sys.version_info > (3, 0):
@@ -127,7 +134,7 @@ def remdow_img_center(value):
 @register.simple_tag(name='lazy_script_include')
 @as_mark_safe
 def remdow_lazy_script_include():
-    return '<script src="//cdn.jsdelivr.net/layzr.js/2.0.2/layzr.min.js">var layzr = new Layzr();</script>'
+    return '<script src="//cdn.jsdelivr.net/layzr.js/2.2/layzr.min.js">var layzr = new Layzr();</script>'
 
 
 @register.filter(name='img_lazy')

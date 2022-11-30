@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
 
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
-from setuptools import setup, Command
+from setuptools import Command, setup
 
 
 class PyTest(Command):
@@ -28,15 +28,15 @@ class PyTest(Command):
 
 setup(
     name='django-remdow',
-    version='0.0.5',
+    version='0.0.7',
     author='Alexander Sapronov',
     author_email='a@sapronov.me',
     keywords=['django', 'static', 'templatetags', 'downloader', ],
     packages=['django_remdow'],
     include_package_data=True,
-    url='https://github.com/WarmongeR1/django-remdow',
+    url='https://github.com/axsapronov/django-remdow',
     license='MIT',
-    description='Simple Django app for manipulating static files (img files)',
+    description='Django app for lazyload static files (img files)',
     long_description=README,
     install_requires=['django>=1.6', 'beautifulsoup4'],
     classifiers=[
@@ -50,6 +50,12 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ]
