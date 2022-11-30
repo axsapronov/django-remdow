@@ -38,6 +38,7 @@ setup(
     license='MIT',
     description='Django app for lazyload static files (img files)',
     long_description=README,
+    long_description_content_type="text/markdown",
     install_requires=['django>=1.6', 'beautifulsoup4'],
     classifiers=[
         'Environment :: Web Environment',
