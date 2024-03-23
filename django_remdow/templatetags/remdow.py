@@ -134,7 +134,7 @@ def remdow_img_center(value):
 @register.simple_tag(name='lazy_script_include')
 @as_mark_safe
 def remdow_lazy_script_include():
-    return '<script src="//cdn.jsdelivr.net/layzr.js/2.2/layzr.min.js">var layzr = new Layzr();</script>'
+    return '<script src="https://cdnjs.cloudflare.com/ajax/libs/layzr.js/2.2.2/layzr.min.js">var layzr = new Layzr();</script>'
 
 
 @register.filter(name='img_lazy')
