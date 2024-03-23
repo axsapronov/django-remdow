@@ -133,8 +133,8 @@ def remdow_img_center(value):
 
 @register.simple_tag(name='lazy_script_include')
 @as_mark_safe
-def remdow_lazy_script_include():
-    return '<script src="https://cdnjs.cloudflare.com/ajax/libs/layzr.js/2.2.2/layzr.min.js">var layzr = new Layzr();</script>'
+def remdow_lazy_script_include():    
+    return '<script src="https://cdnjs.cloudflare.com/ajax/libs/layzr.js/2.2.2/layzr.min.js" integrity="sha512-q3ExXBG4Bmc9V2hgntugdedBM9/GT7qt8OGHDv65+LEX5yURjaBkLXCBmtqGLN1kW0PvQB/8mdMEB+tNO3cWsQ==" crossorigin="anonymous" referrerpolicy="no-referrer">var layzr = new Layzr();</script>'
 
 
 @register.filter(name='img_lazy')
