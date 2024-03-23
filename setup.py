@@ -28,7 +28,7 @@ class PyTest(Command):
 
 setup(
     name='django-remdow',
-    version='0.0.7',
+    version='0.0.8',
     author='Alexander Sapronov',
     author_email='a@sapronov.me',
     keywords=['django', 'static', 'templatetags', 'downloader', ],
